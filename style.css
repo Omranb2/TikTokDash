@@ -1,0 +1,232 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* Global Styles */
+html, body, [data-testid="stAppViewContainer"] {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+    font-family: 'Inter', sans-serif !important;
+}
+
+/* Hide Streamlit default elements */
+#MainMenu {visibility: hidden;}
+footer {visibility: hidden;}
+header {visibility: hidden;}
+
+/* Main container styling */
+.main-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+/* Main title styling */
+.main-title {
+    color: white !important;
+    font-size: 2.5rem !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    margin-bottom: 2rem !important;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Form container */
+.form-container {
+    background: rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 2rem;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    margin-bottom: 2rem;
+}
+
+/* Input styling - Improved visibility */
+div[data-testid="stTextInput"] > div > div > input {
+    background-color: rgba(255, 255, 255, 0.85) !important;
+    color: #2c3e50 !important;
+    border: 2px solid rgba(139, 92, 246, 0.6) !important;
+    border-radius: 8px !important;
+    padding: 12px 16px !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+div[data-testid="stTextInput"] > div > div > input:focus {
+    border-color: rgba(139, 92, 246, 1) !important;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.3) !important;
+    outline: none !important;
+    background-color: rgba(255, 255, 255, 0.95) !important;
+}
+
+div[data-testid="stTextInput"] > div > div > input::placeholder {
+    color: rgba(100, 116, 139, 0.8) !important;
+    font-weight: 400 !important;
+}
+
+/* Label styling */
+div[data-testid="stTextInput"] label {
+    color: white !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
+    margin-bottom: 8px !important;
+}
+
+/* Primary Button styling */
+button[data-testid="baseButton-primary"] {
+    background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    color: white !important;
+    font-weight: 600 !important;
+    font-size: 16px !important;
+    padding: 12px 24px !important;
+    width: 100% !important;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+button[data-testid="baseButton-primary"]:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4) !important;
+}
+
+/* Secondary Button styling (Back button) */
+button[data-testid="baseButton-secondary"] {
+    background: rgba(255, 255, 255, 0.2) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    border-radius: 8px !important;
+    color: white !important;
+    font-weight: 500 !important;
+    font-size: 14px !important;
+    padding: 8px 16px !important;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+}
+
+button[data-testid="baseButton-secondary"]:hover {
+    background: rgba(255, 255, 255, 0.3) !important;
+    transform: translateY(-1px) !important;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Form submit button */
+div[data-testid="stForm"] button[kind="primaryFormSubmit"] {
+    background: linear-gradient(135deg, #8b5cf6 0%, #a855f7 100%) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    color: white !important;
+    font-weight: 600 !important;
+    font-size: 16px !important;
+    padding: 12px 24px !important;
+    width: 100% !important;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+}
+
+div[data-testid="stForm"] button[kind="primaryFormSubmit"]:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4) !important;
+}
+
+/* Metrics styling */
+div[data-testid="metric-container"] {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 12px !important;
+    padding: 1rem !important;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
+}
+
+div[data-testid="metric-container"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+}
+
+div[data-testid="metric-container"] [data-testid="metric-container"] > div {
+    color: white !important;
+}
+
+/* Success/Error messages */
+div[data-testid="stAlert"] {
+    border-radius: 8px !important;
+    backdrop-filter: blur(10px);
+}
+
+div[data-testid="stSuccess"] {
+    background-color: rgba(34, 197, 94, 0.2) !important;
+    border: 1px solid rgba(34, 197, 94, 0.3) !important;
+    color: white !important;
+}
+
+div[data-testid="stError"] {
+    background-color: rgba(239, 68, 68, 0.2) !important;
+    border: 1px solid rgba(239, 68, 68, 0.3) !important;
+    color: white !important;
+}
+
+div[data-testid="stInfo"] {
+    background-color: rgba(59, 130, 246, 0.2) !important;
+    border: 1px solid rgba(59, 130, 246, 0.3) !important;
+    color: white !important;
+}
+
+/* Spinner styling */
+div[data-testid="stSpinner"] {
+    color: white !important;
+}
+
+/* Expander styling */
+div[data-testid="stExpander"] {
+    background: rgba(255, 255, 255, 0.1) !important;
+    border-radius: 8px !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(10px);
+}
+
+div[data-testid="stExpander"] summary {
+    color: white !important;
+    font-weight: 500 !important;
+}
+
+/* Markdown text styling */
+.stMarkdown, .stMarkdown p, .stMarkdown h1, .stMarkdown h2, .stMarkdown h3 {
+    color: white !important;
+}
+
+/* Hide form border */
+div[data-testid="stForm"] {
+    border: none !important;
+    background: transparent !important;
+}
+
+/* Image styling */
+div[data-testid="stImage"] {
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+/* Help text styling */
+div[data-testid="stTextInput"] div[data-testid="InputInstructions"] {
+    color: rgba(255, 255, 255, 0.7) !important;
+    font-size: 12px !important;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    .main-container {
+        padding: 1rem 0.5rem;
+    }
+    
+    .main-title {
+        font-size: 2rem !important;
+    }
+    
+    .form-container {
+        padding: 1.5rem;
+        margin: 0 0.5rem;
+    }
+}
