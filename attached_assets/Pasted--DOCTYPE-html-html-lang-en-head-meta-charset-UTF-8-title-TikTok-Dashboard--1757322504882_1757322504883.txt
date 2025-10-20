@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TikTok Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        /* General container for the gauge */
+        .gauge-container {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin: 20px 0;
+        }
+
+        /* Gauge structure */
+        .gauge {
+            position: relative;
+            width: 120px;
+            height: 60px;
+            border-radius: 100px 100px 0 0;
+            background: conic-gradient(
+                green 0deg 120deg,
+                yellow 120deg 240deg,
+                red 240deg 360deg
+            );
+            overflow: hidden;
+        }
+
+        /* Needle for the gauge */
+        .needle {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            width: 2px;
+            height: 50px;
+            background-color: black;
+            transform-origin: bottom;
+            transform: rotate(90deg); /* Adjust this value dynamically */
+            transition: transform 0.5s ease;
+        }
+
+        /* Title for each gauge */
+        .gauge-title {
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        /* Value text for each gauge */
+        .gauge-value {
+            font-size: 16px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        /* Value for Credibility */
+        .credibility-value {
+            font-size: 14px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        /* Overview Section */
+        .overview-box {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            padding: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        /* Profile Image Section */
+        .left-panel {
+            width: 25%;
+            background-color: #f9f9f9;
+            padding: 30px;
+            border-right: 1px solid #ddd;
+            text-align: center;
+            height: 100vh;
+        }
+
+        .profile-img {
+            border-radius: 50%;
+            width: 100px;
+            height: 100px;
+            object-fit: cover;
+        }
+
+        /* Media Query for Responsiveness */
+        @media (max-width: 768px) {
+            .left-panel {
+                display: none;
+            }
+
+            .right-panel {
+                width: 100%;
+            }
+
+            .gauge-container {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div style="display: flex;">
+        <!-- Left Panel (Profile) -->
+        <div class="left-panel">
+            <img src="{{ profile_picture_url }}" alt="Profile Image" class="profile-img">
+            <h2>{{ full_name }}</h2>
+        </div>
+
+        <!-- Right Panel (Main Content) -->
+        <div class="right-panel">
+
+            <!-- Overview Section -->
+            <div class="overview-box">
+                <div class="overview-item"><i>👥</i> <span>Followers: {{ data.followers }}</span></div>
+                <div class="overview-item"><i>🔗</i> <span>Following: {{ data.following }}</span></div>
+                <div class="overview-item"><i>📼</i> <span>Videos: {{ data.videos }}</span></div>
+                <div class="overview-item"><i>❤️</i> <span>Total Likes: {{ data.likes }}</span></div>
+                <div class="overview-item"><i>✅</i> <span>Verified: {{ data.verified }}</span></div>
+                <div class="overview-item"><i>🔒</i> <span>Private Account: {{ data.private_account }}</span></div>
+            </div>
+
+            <!-- Metrics Row (Influencer Score & Credibility Gauge) -->
+            <div class="gauge-container">
+                <!-- Credibility Gauge -->
+                <div class="gauge">
+                    <div class="needle" id="credibility-needle" style="transform: rotate(90deg);"></div>
+                    <div class="gauge-title">Credibility</div>
+                    <div class="credibility-value" id="credibility-value">Moderate</div> <!-- Display value here -->
+                </div>
+
+                <!-- Influencer Score Gauge -->
+                <div class="gauge">
+                    <div class="needle" id="score-needle" style="transform: rotate(90deg);"></div>
+                    <div class="gauge-title">Influencer Score</div>
+                    <div class="gauge-value" id="score-value">78.04%</div> <!-- Display value here -->
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Function to update the needle's rotation based on the score (from 0 to 100)
+        function updateNeedle(needleId, score, valueId) {
+            var angle = (score / 100) * 180 - 90;  // Mapping score to angle (-90 to 90)
+            document.getElementById(needleId).style.transform = "rotate(" + angle + "deg)";
+            document.getElementById(valueId).innerText = score.toFixed(2) + "%";  // Display the score value
+        }
+
+        // Example: Set the Credibility needle to 75% and Influencer Score needle to 78.04%
+        updateNeedle("credibility-needle", 75, "credibility-value");  // Example: 75% for credibility
+        updateNeedle("score-needle", 78.04, "score-value");  // Example: 78.04% for influencer score
+    </script>
+</body>
+</html>

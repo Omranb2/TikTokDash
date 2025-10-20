@@ -1,0 +1,138 @@
+/* Base Styles */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter', sans-serif;
+  background-color: #f2f4f8;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+/* Top Horizontal Score Boxes */
+.top-scores {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.score-box {
+  flex: 1;
+  background-color: #ffffff;
+  padding: 30px;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.score-box .label {
+  font-size: 1.1rem;
+  color: #666;
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+.score-box .value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #4CAF50;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+
+.stat-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.stat-label {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #777;
+  margin-bottom: 10px;
+}
+
+.stat-value {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #333;
+}
+
+/* Credibility Gauge Styles */
+.credibility-container {
+  margin-top: 20px;
+}
+
+.gauge {
+  width: 120px;
+  height: 60px;
+  background: conic-gradient(red 0deg 60deg, orange 60deg 120deg, green 120deg 180deg);
+  border-radius: 100px 100px 0 0;
+  position: relative;
+  margin: 0 auto 10px auto;
+}
+
+.gauge-fill {
+  width: 4px;
+  height: 60px;
+  background: black;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform-origin: bottom center;
+  transition: transform 0.3s ease-in-out;
+}
+
+.gauge-cover {
+  position: absolute;
+  bottom: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 16px;
+}
+
+.legend {
+  display: flex;
+  justify-content: space-between;
+  width: 120px;
+  margin: 0 auto;
+  font-size: 12px;
+}
+
+.credibility-label {
+  text-align: center;
+  margin-top: 8px;
+  font-size: 14px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .top-scores {
+    flex-direction: column;
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
+}

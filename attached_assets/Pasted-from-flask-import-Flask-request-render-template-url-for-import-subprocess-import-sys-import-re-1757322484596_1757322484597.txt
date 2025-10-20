@@ -1,0 +1,153 @@
+from flask import Flask, request, render_template, url_for
+import subprocess
+import sys
+import re
+import random
+
+app = Flask(__name__)
+
+def extract_username_from_url(url):
+    match = re.search(r'tiktok\.com/@([^/?]+)', url)
+    return match.group(1) if match else None
+
+def parse_count(s):
+    if not s:
+        return 0
+    s = s.lower().replace(',', '').strip()
+    try:
+        if 'k' in s:
+            return float(s.replace('k', '')) * 1_000
+        elif 'm' in s:
+            return float(s.replace('m', '')) * 1_000_000
+        elif 'b' in s:
+            return float(s.replace('b', '')) * 1_000_000_000
+        else:
+            return float(s)
+    except:
+        return 0
+
+def scrape_tiktok(username):
+    script_path = "TikTok-User-Info-Scraper/TikTok.py"
+    python_executable = sys.executable
+
+    result = subprocess.run(
+        [python_executable, script_path, username],
+        capture_output=True,
+        text=True,
+        encoding='utf-8'
+    )
+
+    if result.returncode != 0:
+        return {"error": f"Error running TikTok.py: {result.stderr.strip()}"}
+
+    output = result.stdout
+    data = {}
+
+    for line in output.splitlines():
+        if ": " in line:
+            key, val = line.split(": ", 1)
+            key = key.strip().lower().replace(" ", "_")
+            data[key] = val.strip()
+
+    # Defaults and derived values
+    data.setdefault("username", username)
+    data.setdefault("followers", data.get("followers", "0"))
+    data.setdefault("likes", data.get("likes", data.get("heart", "0")))
+    data.setdefault("videos", data.get("videos", "1"))
+    data.setdefault("following", data.get("following", "0"))
+    data.setdefault("tiktok_profile", url_for('static', filename='profile.jpg'))  # fallback image
+
+    followers = parse_count(data["followers"])
+    likes = parse_count(data["likes"])
+    videos = max(parse_count(data["videos"]), 1)
+    following = parse_count(data["following"])
+
+    avg_likes = likes / videos
+    engagement_rate = (avg_likes / followers) * 100 if followers else 0
+    ff_ratio = followers / following if following else followers
+
+    # Normalized scoring
+    #avg_likes_score = min(avg_likes / 10_000, 1.0) * 100
+    #ff_score = min(ff_ratio / 100, 1.0) * 100
+    #er_score = min(engagement_rate / 100, 1.0) * 100
+
+    #influencer_score = round((er_score * 0.4) + (avg_likes_score * 0.2) + (ff_score * 0.4), 2)
+    # New Influencer Score Calculation (based on user-defined logic)
+    try:
+        ER_score = engagement_rate * 100
+    except:
+        ER_score = 0
+
+    try:
+        F_score = math.log10(followers) * 10 if followers > 0 else 0
+    except:
+        F_score = 0
+
+    FF_score = min(ff_ratio, 10) * 10
+
+    # Set weights (must sum to 1.0)
+    w1 = 0.4  # ER weight
+    w2 = 0.3  # Followers weight
+    w3 = 0.3  # FF ratio weight
+
+    influencer_score = round((ER_score * w1) + (F_score * w2) + (FF_score * w3), 2)
+
+    data.update({
+        "avg_likes_per_video": f"{avg_likes:.2f}",
+        "engagement_rate": f"{engagement_rate:.2f}",
+        "follower_following_ratio": f"{ff_ratio:.2f}",
+        "influencer_score": influencer_score,
+        "authenticity_score": influencer_score,  # Same value unless you compute differently
+        "follower_following_verdict": "Good" if ff_ratio > 1.5 else "Low",
+        "verified_verdict": "Yes" if data.get("verified", "").lower() == "true" else "No",
+        "private_account_verdict": "Yes" if data.get("private_account", "").lower() == "true" else "No"
+    })
+
+    return data
+
+@app.route('/', methods=['GET', 'POST'])
+def index():
+    if request.method == 'POST':
+        full_name = request.form.get('full_name', '')
+        tiktok_url = request.form.get('tiktok_url', '')
+        username = extract_username_from_url(tiktok_url)
+
+        if not username:
+            return render_template('index.html', error="Invalid TikTok URL.")
+
+        data = scrape_tiktok(username)
+
+        # Sample fallback name
+        full_name = full_name.strip() or data.get("username", "Unknown User")
+
+        # ✅ Credibility logic for gauge (based on ER)
+        try:
+            engagement_rate = float(data.get("engagement_rate", 0))
+        except:
+            engagement_rate = 0
+
+        if engagement_rate < 1:
+            credibility_level = "Low"
+            gauge_rotation = 30
+        elif 1 <= engagement_rate <= 3:
+            credibility_level = "Moderate"
+            gauge_rotation = 90
+        else:
+            credibility_level = "High"
+            gauge_rotation = 150
+
+        return render_template(
+            'dashboard.html',
+            full_name=full_name,
+            profile_picture_url=data.get("tiktok_profile"),
+            influencer_score=data.get("influencer_score", 0),
+            authenticity_score=data.get("authenticity_score", 0),
+            data=data,
+            credibility_level=credibility_level,
+            gauge_rotation=gauge_rotation
+        )
+
+    return render_template('index.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
